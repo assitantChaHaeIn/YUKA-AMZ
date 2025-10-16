@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>𝕐𝕌𝕂𝔸 絆 — Link Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0101;
+      --neon1:#ff0033;
+      --neon2:#ff4d4d;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      height:100%;
+      overflow:hidden;
+      font-family:Orbitron,system-ui;
+      color:#fff;
+      background:var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    canvas#bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background:#0a0101;
+    }
+    .card{
+      position:relative;
+      z-index:2;
+      width:360px;
+      max-width:92vw;
+      border-radius:22px;
+      padding:28px 20px;
+      background:rgba(20,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter:blur(8px);
+      box-shadow:0 0 25px rgba(255,0,0,0.25);
+    }
+    .avatarWrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .avatar{
+      width:110px;height:110px;border-radius:50%;overflow:hidden;
+      box-shadow:0 0 25px rgba(255,0,0,0.4);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+    .name{font-size:34px;text-align:center;
+      background:linear-gradient(90deg,var(--neon1),var(--neon2));
+      -webkit-background-clip:text;color:transparent;font-weight:700}
+    .tag{text-align:center;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.7)}
+    .links{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+    .btn{
+      display:flex;align-items:center;gap:14px;
+      padding:14px 16px;border-radius:16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      color:#fff;text-decoration:none;font-weight:600;
+      transition:all .2s;
+    }
+    .btn:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(255,50,50,0.4);}
+    .btn .icon{
+      width:36px;height:36px;border-radius:10px;
+      background:linear-gradient(135deg,var(--neon1),var(--neon2));
+      display:flex;align-items:center;justify-content:center;
+    }
+    .sub{font-size:13px;color:rgba(255,255,255,0.6);display:block}
+    .footer{font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:14px}
+    .footer a{color:var(--neon2);text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <div class="card">
+    <div class="avatarWrap">
+      <div class="avatar">
+        <img src="https://i.ibb.co/jk7SRhYQ/Untitled3-20251016145814.jpg" alt="YUKA Avatar">
+      </div>
+      <div class="name">𝕐𝕌𝕂𝔸 絆</div>
+      <div class="tag">MANGA EDITOR</div>
+    </div>
+
+    <div class="links">
+      <a class="btn" href="https://youtube.com/@yuka-amz" target="_blank">
+        <span class="icon">▶</span>
+        <div>YouTube<div class="sub">@yuka-amz</div></div>
+      </a>
+      <a class="btn" href="https://discord.gg/qEARaATYZt" target="_blank">
+        <span class="icon">💬</span>
+        <div>Discord<div class="sub">Join the server</div></div>
+      </a>
+      <a class="btn" href="https://pin.it/1f1KT6Y4z" target="_blank">
+        <span class="icon">📌</span>
+        <div>Pinterest<div class="sub">My Pins</div></div>
+      </a>
+    </div>
+
+    <div class="footer">Made by <a href="https://youtube.com/@yuka-amz" target="_blank">YUKA-AMZ</a></div>
+  </div>
+
+  <script>
+    const c = document.getElementById('bg');
+    const ctx = c.getContext('2d');
+    let w, h;
+    function resize(){ w = c.width = innerWidth; h = c.height = innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    const fontSize = 16;
+    const chars = '01';
+    let cols, drops;
+
+    function initRain(){
+      cols = Math.floor(w / fontSize);
+      drops = new Array(cols).fill(0).map(()=>Math.random()*h/fontSize);
+    }
+    initRain();
+
+    function glitchEffect(){
+      const bars = Math.floor(Math.random()*3);
+      for(let i=0;i<bars;i++){
+        const y = Math.random()*h;
+        const height = 5 + Math.random()*20;
+        const width = w * (0.1 + Math.random()*0.9);
+        const x = Math.random()*(w - width);
+        ctx.fillStyle = `rgba(255,${30+Math.random()*50},${30+Math.random()*60},${0.15+Math.random()*0.25})`;
+        ctx.fillRect(x, y, width, height);
+      }
+    }
+
+    function draw(){
+      ctx.fillStyle='rgba(10,0,0,0.2)';
+      ctx.fillRect(0,0,w,h);
+      ctx.font = fontSize+'px Share Tech Mono';
+      for(let i=0;i<drops.length;i++){
+        const text = chars[Math.floor(Math.random()*chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillStyle = `rgba(255,${50+Math.random()*80},${50+Math.random()*40},0.9)`;
+        ctx.fillText(text,x,y);
+        if(y>h && Math.random()>0.975)drops[i]=0;
+        drops[i]++;
+      }
+      if(Math.random()<0.07) glitchEffect();
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>
